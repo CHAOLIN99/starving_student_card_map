@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/reouct/Starving_student_card_map#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0"
   }
 }
