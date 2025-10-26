@@ -30,3 +30,10 @@ create `dbConfig.json` file with credentials from MongoDB atlas
 - run `node index.js`
 
 To see endpoints for express server GET `http:localhost:3000/api/docs` via Curl or Browser
+
+### Add sample data to DB
+
+Once server is running (see above), from another terminal:
+
+- cd into `server/sampleData`
+- run `node addSampleToDB.js`
