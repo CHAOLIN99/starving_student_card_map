@@ -36,4 +36,4 @@ To see endpoints for express server GET `http:localhost:3000/api/docs` via Curl 
 Once server is running (see above), from another terminal:
 
 - cd into `server/sampleData`
-- run `node addSampleToDB.js`
+- run `node postSampleDataToServer.js`
