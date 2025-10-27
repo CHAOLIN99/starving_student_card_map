@@ -25,7 +25,7 @@ export default function MapView({
         />
         {markers.map((m) => (
           <CircleMarker
-            key={m.id}
+            key={m.markerId}
             center={m.latlng}
             radius={8}
             pathOptions={{
