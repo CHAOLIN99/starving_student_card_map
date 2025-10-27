@@ -28,11 +28,11 @@ export default function MainView() {
       .then((response) =>
         response.json().then((data) => {
           if (response.status === 200) {
-            console.log(data);
+            // console.log(data);
             const deals = [];
             for (let i = 0; i < data.length; i++) {
               const store = data[i].store;
-              console.log(store);
+              // console.log(store);
               const dealNoLatlng = {
                 id: data[i].id,
                 deal: data[i].description,
@@ -52,8 +52,8 @@ export default function MainView() {
                 deals.push({ ...dealNoLatlng, latlngs });
               }
             }
-            console.log("RESULT FROM FETCH Setting reformatted deals");
-            console.log(deals);
+            // console.log("RESULT FROM FETCH Setting reformatted deals");
+            // // console.log(deals);
             setDeals(deals);
           } else {
             console.log(`BAD RESPONSE -- ${response.status}:  ${data}`);
