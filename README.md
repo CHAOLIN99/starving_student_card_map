@@ -15,9 +15,10 @@
 
 - cd into `server`
 
-create `config.js` file with your unique JWTsecret, this can be anything.
+- create `config.js` file with your unique JWTsecret, this can be anything.
 
 ```
+// config.js
 module.exports = {
   jwtSecret: "your-secret-here",
 };
@@ -25,7 +26,7 @@ module.exports = {
 
 - cd into `server/database`
 
-create `dbConfig.json` file with credentials from MongoDB atlas
+- create `dbConfig.json` file with credentials from MongoDB atlas
 
 ```
 // dbConfig.json
@@ -49,7 +50,7 @@ To see endpoints for express server GET `http:localhost:3000/api/docs` via Curl 
 Once server is running (see above), from another terminal:
 
 - cd into `server/sampleData`
-- run `node postSampleDataToServer.js`
+- run `node postSampleDealsToServer.js`
 
 This loads the sample deal data by several HTTP `POST` request to the backend `/api/deal`
 
@@ -59,3 +60,8 @@ This loads the sample deal data by several HTTP `POST` request to the backend `/
 
 - cd into `server/sampleData`
 - run `node dropDealCollection.js`
+
+### Unit Tests
+
+- cd into `server`
+- run `npm test` to run unit tests

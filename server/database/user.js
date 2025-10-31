@@ -25,6 +25,7 @@ async function createUser(userData) {
 
   await collections.userCollection.insertOne(newUser);
   return { id: newUser.id, username: newUser.username, role: newUser.role };
+}
 
 async function getUserByUsername(username) {
   await ensureConnection();
