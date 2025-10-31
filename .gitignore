@@ -1,2 +1,4 @@
 node_modules/
 dbConfig.json
+config.js
+server/config.js
