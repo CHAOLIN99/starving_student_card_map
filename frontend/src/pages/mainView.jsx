@@ -77,7 +77,7 @@ export default function MainView() {
     let markerCounter = 1;
 
     const markers = filteredDeals.flatMap((deal) =>
-      deal.latlngs.map((latlng) => ({
+      (deal.latlngs ?? []).map((latlng) => ({
         ...deal,
         markerId: markerCounter++,
         latlng, // single coordinate pair
