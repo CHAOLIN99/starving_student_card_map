@@ -25,6 +25,9 @@ export default function RestaurantList({ items = [], onSelect }) {
               onClick={() => onSelect?.(r)}
             >
               <div style={{ fontWeight: 600 }}>{r.name}</div>
+              <div style={{ fontSize: 12, color: "red" }}>{`Max uses: ${
+                r.numUses === null ? "NO LIMIT" : r.numUses
+              }`}</div>
               <div style={{ fontSize: 12, color: "#666" }}>{r.deal}</div>
             </li>
           ))}

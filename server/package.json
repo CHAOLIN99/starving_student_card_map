@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --detectOpenHandles --forceExit"
+  },
+  "jest": {
+    "testTimeout": 30000,
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -19,6 +25,14 @@
   },
   "homepage": "https://github.com/reouct/Starving_student_card_map#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "bcrypt": "^5.1.0",
+    "express": "^5.1.0",
+    "jest": "^30.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^6.20.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
   }
 }

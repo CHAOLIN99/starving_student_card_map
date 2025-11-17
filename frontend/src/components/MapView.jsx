@@ -2,7 +2,8 @@ import React from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const UTAH_CENTER = [39.32, -111.0937];
+// const UTAH_CENTER = [39.32, -111.0937];
+const PROVO_CENTER = [40.2338, -111.659];
 
 export default function MapView({
   children,
@@ -15,8 +16,8 @@ export default function MapView({
       style={{ flex: 1, borderRadius: 8, overflow: "hidden", minHeight: 200 }}
     >
       <MapContainer
-        center={UTAH_CENTER}
-        zoom={6}
+        center={PROVO_CENTER}
+        zoom={10}
         style={{ height: height, width: "100%" }}
       >
         <TileLayer
@@ -25,7 +26,7 @@ export default function MapView({
         />
         {markers.map((m) => (
           <CircleMarker
-            key={m.id}
+            key={m.markerId}
             center={m.latlng}
             radius={8}
             pathOptions={{
@@ -39,6 +40,9 @@ export default function MapView({
           >
             <Popup>
               <strong>{m.name}</strong>
+              <div style={{ fontSize: 12, color: "red" }}>{`Max uses: ${
+                m.numUses === null ? "NO LIMIT" : m.numUses
+              }`}</div>
               <div style={{ fontSize: 12 }}>{m.deal}</div>
             </Popup>
           </CircleMarker>
