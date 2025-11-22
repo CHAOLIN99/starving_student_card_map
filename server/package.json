@@ -26,10 +26,13 @@
   "homepage": "https://github.com/reouct/Starving_student_card_map#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "jest": "^30.2.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^6.20.0",
+    "openai": "^6.9.1",
+    "sqlite3": "^5.1.7",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

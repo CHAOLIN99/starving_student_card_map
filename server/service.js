@@ -1,6 +1,7 @@
 const express = require("express");
 const dealRouter = require("./routes/deal.js");
 const userRouter = require("./routes/user");
+const chatRouter = require("./routes/chat");
 const { authRouter, setAuthUser } = require("./routes/auth");
 const config = require("./config.js");
 const version = { version: "1.0.0" };
@@ -34,6 +35,7 @@ apiRouter.use("/docs", (req, res) => {
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/user", userRouter);
 apiRouter.use("/deal", dealRouter);
+apiRouter.use("/chat", chatRouter);
 
 app.get("/", (req, res) => {
   res.json({
