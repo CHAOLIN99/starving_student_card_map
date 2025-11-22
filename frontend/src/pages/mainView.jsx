@@ -3,6 +3,7 @@ import MapView from "../components/MapView";
 import RestaurantList from "../components/RestaurantList";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Chatbot from "../components/Chatbot";
 // import { latLng } from "leaflet";
 
 // ```
@@ -132,6 +133,8 @@ export default function MainView() {
         />
       </main>
       <Footer />
+
+      <Chatbot />
     </div>
   );
 }
