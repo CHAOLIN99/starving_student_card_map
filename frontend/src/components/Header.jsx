@@ -56,6 +56,19 @@ export default function Header({ onSearch }) {
                 Login
               </Link>
               <Link
+                to="/admin/login"
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 6,
+                  background: "#1f2937",
+                  color: "#fff",
+                  textDecoration: "none",
+                  fontSize: 13,
+                }}
+              >
+                Admin
+              </Link>
+              <Link
                 to="/register"
                 style={{
                   padding: "8px 12px",
