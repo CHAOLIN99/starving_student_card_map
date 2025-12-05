@@ -1,4 +1,3 @@
-// Script to create an admin user: username "admin", password "admin"
 const { userDB } = require("../database/user");
 const { ensureConnection } = require("../database/db");
 
