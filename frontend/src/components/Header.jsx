@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isLoggedIn, logout } from "../utils/auth";
+import { isLoggedIn, isAdmin, logout } from "../utils/auth";
 
 export default function Header({ onSearch }) {
   const loggedIn = isLoggedIn();
@@ -56,6 +56,19 @@ export default function Header({ onSearch }) {
                 Login
               </Link>
               <Link
+                to="/admin/login"
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 6,
+                  background: "#1f2937",
+                  color: "#fff",
+                  textDecoration: "none",
+                  fontSize: 13,
+                }}
+              >
+                Admin
+              </Link>
+              <Link
                 to="/register"
                 style={{
                   padding: "8px 12px",
@@ -85,6 +98,21 @@ export default function Header({ onSearch }) {
             >
               Logout
             </button>
+          )}
+          {loggedIn && isAdmin() && (
+            <Link
+              to="/admin/deals"
+              style={{
+                padding: "8px 12px",
+                borderRadius: 6,
+                background: "#1f2937",
+                color: "#fff",
+                textDecoration: "none",
+                fontSize: 13,
+              }}
+            >
+              Manage Deals
+            </Link>
           )}
         </div>
       </div>

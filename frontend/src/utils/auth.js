@@ -14,6 +14,24 @@ export function isLoggedIn() {
   return Boolean(getToken());
 }
 
+export function getUserFromToken() {
+  const token = getToken();
+  if (!token) return null;
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  try {
+    const payload = JSON.parse(atob(parts[1]));
+    return payload || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function isAdmin() {
+  const user = getUserFromToken();
+  return user?.role === "admin";
+}
+
 export async function logout() {
   const token = getToken();
   try {
