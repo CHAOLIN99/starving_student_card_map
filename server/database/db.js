@@ -1,30 +1,28 @@
-// server/database/db.js
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient } = require("mongodb");
 
-// Use environment variables in production, fallback to config file in development
-let config;
-if (process.env.MONGODB_HOSTNAME) {
-  // Production (Vercel) - use environment variables
-  config = {
-    userName: process.env.MONGODB_USERNAME,
-    password: process.env.MONGODB_PASSWORD,
-    hostname: process.env.MONGODB_HOSTNAME
-  };
-} else {
-  // Development - use local config file
+let config = {};
+try {
   config = require("./dbConfig.json");
+} catch (e) {
+  console.log("No dbConfig.json found, using environment variables");
 }
 
-const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}/?appName=Cluster0`;
+const userName = config.userName || process.env.MONGOUSER;
+const password = config.password || process.env.MONGOPASSWORD;
+const hostname = config.hostname || process.env.MONGOHOSTNAME;
 
-// Create client with Stable API version
-const client = new MongoClient(url, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+// URL-encode the username and password to handle special characters
+const encodedUserName = encodeURIComponent(userName);
+const encodedPassword = encodeURIComponent(password);
+
+console.log("userName:", userName);
+console.log("hostname:", hostname);
+
+const url = `mongodb+srv://${encodedUserName}:${encodedPassword}@${hostname}`;
+
+console.log("Constructed URL:", url.replace(encodedPassword, "***PASSWORD***"));
+
+const client = new MongoClient(url);
 
 let db;
 let userCollection;
@@ -44,8 +42,8 @@ const connectionPromise = (async function initializeConnection() {
     await db.command({ ping: 1 });
     console.log("Connected to database");
   } catch (ex) {
-  console.log(`Unable to connect to database because ${ex.message}`);
-  throw ex;
+    console.log(`Unable to connect to database because ${ex.message}`);
+    throw ex;
   }
 })();
 
