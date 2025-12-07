@@ -1,9 +1,31 @@
-const { MongoClient } = require("mongodb");
-const config = require("./dbConfig.json");
+// server/database/db.js
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
-const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}` ;
+// Use environment variables in production, fallback to config file in development
+let config;
+if (process.env.MONGODB_HOSTNAME) {
+  // Production (Vercel) - use environment variables
+  config = {
+    userName: process.env.MONGODB_USERNAME,
+    password: process.env.MONGODB_PASSWORD,
+    hostname: process.env.MONGODB_HOSTNAME
+  };
+} else {
+  // Development - use local config file
+  config = require("./dbConfig.json");
+}
 
-const client = new MongoClient(url);
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}/?appName=Cluster0`;
+
+// Create client with Stable API version
+const client = new MongoClient(url, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
 let db;
 let userCollection;
 let dealCollection;
@@ -15,16 +37,14 @@ const connectionPromise = (async function initializeConnection() {
   try {
     await client.connect();
     db = client.db("map_starving_db_v1");
-
     userCollection = db.collection("user");
     dealCollection = db.collection("deal");
     redemptionCollection = db.collection("redemption");
     authCollection = db.collection("auth");
-
     await db.command({ ping: 1 });
     console.log("Connected to database");
   } catch (ex) {
-    console.log(`Unable to connect to database ${url} because ${ex.message}`);
+    console.log(`Unable to connect to database because ${ex.message}`);
     throw ex;
   }
 })();
