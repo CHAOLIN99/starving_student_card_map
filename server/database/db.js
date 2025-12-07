@@ -44,8 +44,8 @@ const connectionPromise = (async function initializeConnection() {
     await db.command({ ping: 1 });
     console.log("Connected to database");
   } catch (ex) {
-    console.log(`Unable to connect to database because ${ex.message}`);
-    throw ex;
+  console.log(`Unable to connect to database because ${ex.message}`);
+  throw ex;
   }
 })();
 
