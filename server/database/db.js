@@ -1,75 +1,54 @@
 const { MongoClient } = require("mongodb");
 
-let config = {};
-try {
-  config = require("./dbConfig.json");
-} catch (e) {
-  console.log("No dbConfig.json found, using environment variables");
+const uri =
+  process.env.MONGODB_URI ||
+  (() => {
+    // fallback if you're using dbConfig.json locally
+    try {
+      const config = require("./dbConfig.json");
+      const user = encodeURIComponent(config.userName);
+      const pass = encodeURIComponent(config.password);
+      const host = config.hostname;
+      return `mongodb+srv://${user}:${pass}@${host}/?retryWrites=true&w=majority`;
+    } catch {
+      throw new Error(
+        "Missing MONGODB_URI env variable and no dbConfig.json was found."
+      );
+    }
+  })();
+
+// Global cached client for Vercel serverless reuse
+let cached = global._mongo || { client: null, db: null };
+
+async function connect() {
+  if (cached.client && cached.db) {
+    return cached; // Reuse existing connection
+  }
+
+  const client = new MongoClient(uri);
+  await client.connect();
+
+  const db = client.db("map_starving_db_v1");
+
+  cached.client = client;
+  cached.db = db;
+  global._mongo = cached; // persist in serverless runtime
+
+  return cached;
 }
 
-const userName = config.userName || process.env.MONGOUSER;
-const password = config.password || process.env.MONGOPASSWORD;
-const hostname = config.hostname || process.env.MONGOHOSTNAME;
+async function getDb() {
+  const { db } = await connect();
+  return db;
+}
 
-// URL-encode the username and password to handle special characters
-const encodedUserName = encodeURIComponent(userName);
-const encodedPassword = encodeURIComponent(password);
-
-console.log("userName:", userName);
-console.log("hostname:", hostname);
-
-const url = `mongodb+srv://${encodedUserName}:${encodedPassword}@${hostname}`;
-
-console.log("Constructed URL:", url.replace(encodedPassword, "***PASSWORD***"));
-
-const client = new MongoClient(url);
-
-let db;
-let userCollection;
-let dealCollection;
-let redemptionCollection;
-let authCollection;
-
-// Connection promise to ensure we connect before operations
-const connectionPromise = (async function initializeConnection() {
-  try {
-    await client.connect();
-    db = client.db("map_starving_db_v1");
-    userCollection = db.collection("user");
-    dealCollection = db.collection("deal");
-    redemptionCollection = db.collection("redemption");
-    authCollection = db.collection("auth");
-    await db.command({ ping: 1 });
-    console.log("Connected to database");
-  } catch (ex) {
-    console.log(`Unable to connect to database because ${ex.message}`);
-    throw ex;
-  }
-})();
-
-// Function to ensure connection before operations
-async function ensureConnection() {
-  await connectionPromise;
+async function getCollection(name) {
+  const db = await getDb();
+  return db.collection(name);
 }
 
 module.exports = {
-  client,
-  get db() {
-    return db;
-  },
-  collections: {
-    get userCollection() {
-      return userCollection;
-    },
-    get dealCollection() {
-      return dealCollection;
-    },
-    get redemptionCollection() {
-      return redemptionCollection;
-    },
-    get authCollection() {
-      return authCollection;
-    },
-  },
-  ensureConnection,
+  connect,
+  getDb,
+  getCollection,
 };
